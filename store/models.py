@@ -25,6 +25,12 @@ class Product(models.Model):
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
     promotions = models.ManyToManyField(Promotion)
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['title']
 
 
 class Customer(models.Model):

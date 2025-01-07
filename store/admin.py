@@ -24,6 +24,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ['unit_price']
     list_per_page = 10
     list_select_related = ['collection']
+
     
     def collection_title(self,product):
         return product.collection.title
@@ -39,6 +40,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_editable = ['membership']
     ordering = ['first_name','last_name']
     list_per_page = 10
+    search_fields = ['first_name__istartswith','last_name__istartswith']
     
 # admin.site.register(models.Collection)
 
@@ -48,5 +50,6 @@ class CustomerAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id','placed_at','customer']
     list_per_page = 10
+
     
    

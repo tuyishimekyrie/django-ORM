@@ -4,7 +4,7 @@ from django.utils.html import format_html,urlencode
 from django.urls import reverse
 from . import models
 from django.db.models.aggregates import Count
-from tags.models import TaggedItem
+
 # Register your models here.
 
 class InventoryFilter(admin.SimpleListFilter):
@@ -32,9 +32,7 @@ class CollectionAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(products_count =Count('product'))
 
-class TagInline(GenericTabularInline):
-    autocomplete_fields = ['tag']
-    model = TaggedItem
+
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -43,7 +41,7 @@ class ProductAdmin(admin.ModelAdmin):
     }
     autocomplete_fields = ['collection']
     actions = ['clear_inventory']
-    inlines = [TagInline]
+
     list_display = ["title","unit_price","inventory_status","collection_title"]
     list_editable = ['unit_price']
     list_per_page = 10

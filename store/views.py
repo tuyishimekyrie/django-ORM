@@ -11,8 +11,8 @@ from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIVi
 from rest_framework.views  import APIView
 from rest_framework.viewsets import ModelViewSet,GenericViewSet
 from rest_framework.pagination import PageNumberPagination
-from .models import Collection, Product,OrderItem,Review,Cart
-from .serializer import CollectionSerializer, ProductSerializer,ReviewSerializer,CartSerializer
+from .models import Collection, Product,OrderItem,Review,Cart,CartItem
+from .serializer import CollectionSerializer, ProductSerializer,ReviewSerializer,CartSerializer,CartItemSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 
@@ -170,9 +170,12 @@ class ReviewViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {'product_id':self.kwargs['product_pk']}
     
-class CartViewSet(CreateModelMixin,ListModelMixin,GenericViewSet,DestroyModelMixin):
-    queryset = Cart.objects.all()
-    # queryset = Cart.objects.select_related('product').all()
+class CartViewSet(CreateModelMixin,RetrieveModelMixin,GenericViewSet,DestroyModelMixin):
+    queryset = Cart.objects.prefetch_related('items__product').all()
     serializer_class = CartSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['id']
+
+class CartItemViewSet(ModelViewSet):
+    serializer_class = CartItemSerializer
+    
+    def get_queryset(self):
+        return CartItem.objects.filter(cart_id = self.kwargs['cart_pk']).select_related("product")

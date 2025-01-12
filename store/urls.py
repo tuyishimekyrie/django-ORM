@@ -7,9 +7,12 @@ routers = DefaultRouter()
 
 routers.register("products",views.ProductListViewSet,basename="products")
 routers.register("collections",views.CollectionListViewSet)
+routers.register("carts",views.CartViewSet)
 
 products_routers = NestedDefaultRouter(routers,'products',lookup='product')
 products_routers.register('reviews',views.ReviewViewSet,basename='product-reviews')
+
+
 
 urlpatterns = routers.urls + products_routers.urls
 # urlpatterns = [

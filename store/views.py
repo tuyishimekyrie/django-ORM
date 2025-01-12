@@ -5,7 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter,OrderingFilter
 from rest_framework.decorators import api_view
 from rest_framework.response import Response 
-from rest_framework.mixins import CreateModelMixin,RetrieveModelMixin,ListModelMixin
+from rest_framework.mixins import CreateModelMixin,RetrieveModelMixin,ListModelMixin,DestroyModelMixin
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.views  import APIView
@@ -170,7 +170,7 @@ class ReviewViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {'product_id':self.kwargs['product_pk']}
     
-class CartViewSet(CreateModelMixin,ListModelMixin,GenericViewSet):
+class CartViewSet(CreateModelMixin,ListModelMixin,GenericViewSet,DestroyModelMixin):
     queryset = Cart.objects.all()
     # queryset = Cart.objects.select_related('product').all()
     serializer_class = CartSerializer

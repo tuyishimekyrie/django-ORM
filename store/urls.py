@@ -14,6 +14,7 @@ products_routers.register('reviews',views.ReviewViewSet,basename='product-review
 
 
 
+
 urlpatterns = routers.urls + products_routers.urls
 # urlpatterns = [
 #     path('products/',views.ProductList.as_view()),

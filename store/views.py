@@ -9,15 +9,18 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.views  import APIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.pagination import PageNumberPagination
 from .models import Collection, Product,OrderItem,Review
 from .serializer import CollectionSerializer, ProductSerializer,ReviewSerializer
 from .filters import ProductFilter
+from .pagination import DefaultPagination
 
 class ProductListViewSet(ModelViewSet):
     queryset = Product.objects.select_related('collection').all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     filterset_class = ProductFilter
+    pagination_class = DefaultPagination
     search_fields = ['title','description']
     order_fields = ['unit_price','last_update']
     

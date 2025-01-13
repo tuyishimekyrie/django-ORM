@@ -12,7 +12,7 @@ from rest_framework.views  import APIView
 from rest_framework.viewsets import ModelViewSet,GenericViewSet
 from rest_framework.pagination import PageNumberPagination
 from .models import Collection, Product,OrderItem,Review,Cart,CartItem
-from .serializer import CollectionSerializer, ProductSerializer,ReviewSerializer,CartSerializer,CartItemSerializer,AddCartItemSerializer
+from .serializer import CollectionSerializer, ProductSerializer,ReviewSerializer,CartSerializer,CartItemSerializer,AddCartItemSerializer,UpdateCartItemSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 
@@ -176,10 +176,13 @@ class CartViewSet(CreateModelMixin,RetrieveModelMixin,GenericViewSet,DestroyMode
 
 class CartItemViewSet(ModelViewSet):
     # serializer_class = CartItemSerializer
+    http_method_names = ['get','post','patch','delete']
     
     def get_serializer_class(self):
         if self.request.method == "POST":
             return AddCartItemSerializer
+        elif self.request.method == "PATCH":
+            return UpdateCartItemSerializer
         return CartItemSerializer
     
     def get_serializer_context(self):
